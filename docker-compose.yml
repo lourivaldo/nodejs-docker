@@ -1,9 +1,17 @@
-version: '3.5'
+version: '3'
 
 services:
   app:
     build: .
+    entrypoint: dockerize -template ./.docker/app/.env:.env -wait tcp://db:5432 -timeout 30s ./.docker/app/entrypoint.sh
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=app
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
     restart: always
+    volumes:
+      - .:/usr/src
     ports:
       - "3000:3000"
     depends_on:
