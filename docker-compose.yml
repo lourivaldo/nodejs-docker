@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: postgres:10
+    restart: always
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - "./.docker/postgres-data:/var/lib/postgresql/data"
+    ports:
+      - "5433:5432"
